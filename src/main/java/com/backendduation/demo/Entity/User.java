@@ -14,6 +14,10 @@ import jakarta.persistence.Id;
 @Entity
 public class User implements UserDetails{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -41,6 +45,16 @@ public class User implements UserDetails{
 			return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),new SimpleGrantedAuthority("ROLE_USER"));		
 		else		
 			return List.of(new SimpleGrantedAuthority("ROLE_USER"));				
+	}
+	
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	@Override
