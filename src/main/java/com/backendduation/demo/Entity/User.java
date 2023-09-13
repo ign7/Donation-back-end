@@ -36,6 +36,13 @@ public class User implements UserDetails{
 		this.password = password;
 		this.role = role;
 	}
+	
+	public User( String login, String password, UserRole role) {
+		super();
+		this.login = login;
+		this.password = password;
+		this.role = role;
+	}
 
 
 	@Override
