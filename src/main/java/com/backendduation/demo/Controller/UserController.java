@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backendduation.demo.Entity.LoginResponseDTO;
 import com.backendduation.demo.Entity.RegisterDTO;
 import com.backendduation.demo.Entity.User;
 import com.backendduation.demo.Entity.UserDTO;
 import com.backendduation.demo.Repository.UserRepository;
+import com.backendduation.demo.Service.TokenService;
 import com.backendduation.demo.Service.UserService;
 
 @RestController
@@ -28,6 +30,9 @@ public class UserController {
 	
 	@Autowired
 	UserService service;
+	
+	@Autowired
+	TokenService Tokenservice;
 	
 	@Autowired
 	private AuthenticationManager authetication;
@@ -62,7 +67,9 @@ public class UserController {
     public ResponseEntity login(@RequestBody @Validated UserDTO data) {
 		var usernamepassword= new UsernamePasswordAuthenticationToken(data.login(), data.password());
 		var auth= this.authetication.authenticate(usernamepassword);
-		return ResponseEntity.ok().build();
+		var token=Tokenservice.generateToken((User)auth.getPrincipal());
+		
+		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}
 
 }
