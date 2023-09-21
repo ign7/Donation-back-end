@@ -45,7 +45,7 @@ public class UserController {
 		return service.findAll();
 	}
 	
-	@GetMapping(value="/{iduser}")	
+	@GetMapping(value="id=/{iduser}")	
 	public ResponseEntity<Optional<User>> findbyid(@PathVariable Long iduser) {
 	Optional<User> obj=service.findbyid(iduser);		
 	return ResponseEntity.ok().body(obj);
@@ -53,9 +53,9 @@ public class UserController {
 	
 	@PostMapping("/register")
 	public ResponseEntity insert(@RequestBody @Validated RegisterDTO data){
-		if(this.repository.findByLogin(data.login())!=null) return ResponseEntity.badRequest().build();		
+		if(this.repository.findBylogin(data.login())!=null) return ResponseEntity.badRequest().build();		
 		String criptografiadesenha= new BCryptPasswordEncoder().encode(data.password());
-		User user = new User(data.login(),criptografiadesenha,data.role());
+		User user = new User(data.login(),criptografiadesenha,data.nome(),data.email(),data.idade(),data.role());
 		this.repository.save(user);
 		return ResponseEntity.ok().build();
 		

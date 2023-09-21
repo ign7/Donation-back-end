@@ -7,6 +7,6 @@ import com.backendduation.demo.Entity.User;
 
 public interface UserRepository extends JpaRepository<User,Long> {
 	
-  UserDetails findByLogin(String login);
+  UserDetails findBylogin(String login);
 
 }

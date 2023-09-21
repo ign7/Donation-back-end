@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
@@ -29,7 +30,9 @@ public class SecurityConfigurations {
 				.authorizeHttpRequests(authorize->authorize
 						.requestMatchers(HttpMethod.POST,"/usuarios/login").permitAll()
 						.requestMatchers(HttpMethod.POST,"/usuarios/register").permitAll()
-						.requestMatchers(HttpMethod.POST,"/usuarios").hasRole("ADMIN").anyRequest()
+						.requestMatchers(HttpMethod.GET,"/usuarios").permitAll()
+						.requestMatchers(HttpMethod.POST,"/donations/cadastrardonation/**").hasRole("DOADOR")
+						.requestMatchers(HttpMethod.POST,"/usuarios").hasRole("DOADOR").anyRequest()
 						.authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 						.build();

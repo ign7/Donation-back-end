@@ -2,8 +2,8 @@ package com.backendduation.demo.Entity;
 
 public enum UserRole {
 	
-	ADMIN("admin"),
-	USER("user");
+	DOADOR("DOADOR"),
+	RECEPTOR("RECEPTOR");
 	
 	private String role;
 	

@@ -33,9 +33,9 @@ public class SecurityFilter extends OncePerRequestFilter{
 		var token= this.recoverToken(request);
 		if(token!=null) {
 			var login=service.validacaoToken(token);
-			UserDetails user= repository.findByLogin(login);
+			UserDetails user= repository.findBylogin(login);
 			
-			var auteticacao = new UsernamePasswordAuthenticationToken(user, user.getAuthorities());
+			var auteticacao = new UsernamePasswordAuthenticationToken(user, null,user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auteticacao);
 		}
 		filterChain.doFilter(request, response);
@@ -44,7 +44,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 	private String recoverToken(HttpServletRequest request) {
 		var authHeader=request.getHeader("Authorization");
 		if(authHeader==null) return null;					
-		return	authHeader.replace("Bearer", "");		
+		return	authHeader.replace("Bearer ", "");		
 	}
 	
 	
