@@ -14,16 +14,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Donation implements Serializable {
+@Getter
+@Setter
+@EqualsAndHashCode
+public class Solicitacao implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -31,25 +34,29 @@ public class Donation implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
-	private String dataDoacao;	
-	@JsonIgnore
-	@JoinColumn(name ="user_id")
-	@ManyToOne	
-	private User usuarioDoador;	
 	
 	@JsonIgnore
-	@JoinColumn(name ="solicitacao_id")
-	@ManyToOne	
-	private Solicitacao solicitacaodonations;	
+	@ManyToOne
+	@JoinColumn(name = "solicitante_id")
+	private User solicitanteusuario;
+		
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "material")
-	private List<Material> materiais = new ArrayList<>();
+	@OneToMany(mappedBy = "solicitacaodonations")
+	private List<Donation> donationSolicitadas = new ArrayList<>();
 	
-//   public Donation(String DataDoacao) {
-//	   this.dataDoacao=DataDoacao;
-//   }
+	private String dataSolicitacao;
 	
+    private String observacao;
+    
+    private SolicitacaoRole role;
+    
+   
+    private String nomedoador;
+    
+    
+    public Solicitacao(String dataSolicitacao,String observacao) {
+    	this.dataSolicitacao=dataSolicitacao;
+    	this.observacao=observacao;
+    }
 
 }

@@ -40,8 +40,12 @@ public class User implements UserDetails{
     private Integer idade;
 	private String email;
     private UserRole role;   
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuarioDoador")
 	private List<Donation> Doacoes = new ArrayList<>();
+    
+    
+   @OneToMany(mappedBy = "solicitanteusuario")
+	private List<Solicitacao> solicitacoes = new ArrayList<>();
     
     
 	

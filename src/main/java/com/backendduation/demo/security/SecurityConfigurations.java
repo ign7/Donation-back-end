@@ -31,8 +31,9 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.POST,"/usuarios/login").permitAll()
 						.requestMatchers(HttpMethod.POST,"/usuarios/register").permitAll()
 						.requestMatchers(HttpMethod.GET,"/usuarios").permitAll()
-						.requestMatchers(HttpMethod.POST,"/donations/cadastrardonation/**").hasRole("DOADOR")
-						.requestMatchers(HttpMethod.POST,"/usuarios").hasRole("DOADOR").anyRequest()
+						.requestMatchers(HttpMethod.GET,"/solicitacoes/listartodos").permitAll()
+						.requestMatchers(HttpMethod.POST,"/solicitacoes/realizarsolicitacao/**").permitAll()
+						.requestMatchers(HttpMethod.POST,"/donations/cadastrardonation/**").hasRole("DOADOR").anyRequest()
 						.authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 						.build();

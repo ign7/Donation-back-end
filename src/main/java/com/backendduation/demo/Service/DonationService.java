@@ -1,12 +1,14 @@
 package com.backendduation.demo.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.backendduation.demo.Entity.Donation;
+import com.backendduation.demo.Entity.User;
 import com.backendduation.demo.Repository.DonationRepository;
 
 
@@ -36,6 +38,11 @@ public class DonationService {
 		}catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Optional<Donation> findbyid(Long id) {
+		Optional<Donation> obj= repository.findById(id);
+		return obj;
 	}
 
 }

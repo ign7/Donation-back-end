@@ -43,7 +43,7 @@ public class DonationController {
 	@PostMapping("/cadastrardonation/{usuario_id}")
 	public ResponseEntity<Donation> insert(@RequestBody @Validated Donation item,@PathVariable("usuario_id") Long id) {
 		User usuario=repository.findById(id).orElseThrow(()->new IllegalArgumentException("Id nao encontrado"));			    
-		item.setUsuario(usuario);
+		item.setUsuarioDoador(usuario);
 		usuario.getDoacoes().add(item);
 	    item=service.insert(item);
 		return ResponseEntity.ok().body(item);
