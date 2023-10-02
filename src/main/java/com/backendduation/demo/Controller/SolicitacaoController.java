@@ -52,18 +52,22 @@ public class SolicitacaoController {
 	        @PathVariable("doador_id") Long iddoador,
 	        @PathVariable("receptor_id") Long idreceptor,
 	        @PathVariable("donation_id") Long iddonation) {
+		
 		User solicitante=userrepository.findById(idreceptor).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
 		User doador=userrepository.findById(iddoador).orElseThrow(()->new IllegalArgumentException("Id doador nao encontrado"));
 		Donation doation=donationrepository.findById(iddonation).orElseThrow(()->new IllegalArgumentException("Id  donation nao encontrado"));
 					
-				//solicitante.getSolicitacoes().add(solicitacao);			
-				solicitacao.setNomedoador(doador.getNome());
-				solicitacao.getDonationSolicitadas().add(doation);				
-				
-				solicitacao.setSolicitanteusuario(solicitante);
-				solicitacao.setRole(SolicitacaoRole.AGUARDANDO);
-				solicitacao=solservice.insert(solicitacao);
-				return ResponseEntity.ok().body(solicitacao);								
+		//solicitante.getSolicitacoes().add(solicitacao);			
+		solicitacao.setDestinatario(doador);
+		doation.getDonationSolicitadas().add(solicitacao);
+		solicitacao.setSolicitante(solicitante);
+		solicitacao.setSolicita_donations(doation);
+		//doation.getSolicitacoes().add(solicitacao);
+		solicitante.getSolicitacoesEnviadas().add(solicitacao);
+		doador.getSolicitacoesRecebidas().add(solicitacao);
+		solicitacao.setRole(SolicitacaoRole.AGUARDANDO);
+		solicitacao=solservice.insert(solicitacao);
+		return ResponseEntity.ok().body(solicitacao);								
 				
 	}
 			

@@ -38,22 +38,32 @@ public class Solicitacao implements Serializable {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "solicitante_id")
-	private User solicitanteusuario;
+	private User solicitante;
+	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "destinatario_id")
+	private User destinatario;
+	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name ="solicitacao_id")		
+	private Donation solicita_donations;
 		
 	
-	@OneToMany(mappedBy = "solicitacaodonations")
-	private List<Donation> donationSolicitadas = new ArrayList<>();
+//	@OneToMany(mappedBy = "solicita_donations")
+//	private List<Donation> donationSolicitadas = new ArrayList<>();
+	
+	
+	
+
 	
 	private String dataSolicitacao;
 	
     private String observacao;
     
     private SolicitacaoRole role;
-    
-   
-    private String nomedoador;
-    
-    
+       
     public Solicitacao(String dataSolicitacao,String observacao) {
     	this.dataSolicitacao=dataSolicitacao;
     	this.observacao=observacao;

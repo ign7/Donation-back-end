@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -38,10 +39,15 @@ public class Donation implements Serializable {
 	@ManyToOne	
 	private User usuarioDoador;	
 	
-	@JsonIgnore
-	@JoinColumn(name ="solicitacao_id")
-	@ManyToOne	
-	private Solicitacao solicitacaodonations;	
+//	@JsonIgnore
+//	@ManyToOne
+//	@JoinColumn(name ="solicitacao_id")		
+//	private Donation solicita_donations;	
+	
+	@OneToMany(mappedBy = "solicita_donations")
+	private List<Solicitacao> donationSolicitadas = new ArrayList<>();
+	
+
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "material")

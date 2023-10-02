@@ -44,8 +44,11 @@ public class User implements UserDetails{
 	private List<Donation> Doacoes = new ArrayList<>();
     
     
-   @OneToMany(mappedBy = "solicitanteusuario")
-	private List<Solicitacao> solicitacoes = new ArrayList<>();
+   @OneToMany(mappedBy = "solicitante")
+	private List<Solicitacao> solicitacoesEnviadas = new ArrayList<>();
+   
+   @OneToMany(mappedBy = "destinatario")
+	private List<Solicitacao> solicitacoesRecebidas = new ArrayList<>();
     
     
 	
