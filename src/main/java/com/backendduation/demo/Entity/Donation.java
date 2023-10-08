@@ -37,7 +37,7 @@ public class Donation implements Serializable {
 	@JsonIgnore
 	@JoinColumn(name ="user_id")
 	@ManyToOne	
-	private User usuarioDoador;	
+	private User usuario;	
 	
 //	@JsonIgnore
 //	@ManyToOne
