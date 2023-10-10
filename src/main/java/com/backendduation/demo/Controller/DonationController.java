@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backendduation.demo.Entity.Donation;
 import com.backendduation.demo.Entity.User;
-import com.backendduation.demo.Entity.UserRole;
 import com.backendduation.demo.Repository.UserRepository;
 import com.backendduation.demo.Service.DonationService;
+import com.backendduation.demo.enums.UserRole;
 
 
 @RestController

@@ -1,13 +1,14 @@
-package com.backendduation.demo.Entity;
+package com.backendduation.demo.enums;
 
 public enum Categoria {
 	
 	ELETRONICO("eletronico"),
-	 MATERIALESCOLAR("materialescolar"),
-	 LIVRO("livro"),
-	 CADERNO("caderno");
+	MATERIALESCOLAR("materialescolar"),
+	LIVRO("livro"),
+	CADERNO("caderno");
 	
 	private String categoria;
+	
 
 	Categoria(String categoria) {
 		this.categoria=categoria;

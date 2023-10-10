@@ -1,4 +1,4 @@
-package com.backendduation.demo.Entity;
+package com.backendduation.demo.enums;
 
 public enum SolicitacaoRole {
 	

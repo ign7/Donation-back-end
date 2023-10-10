@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.backendduation.demo.enums.UserRole;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +40,7 @@ public class User implements UserDetails{
     private String password;
     private Integer idade;
 	private String email;
+	private String telefone;
     private UserRole role;   
     @OneToMany(mappedBy = "usuario")
 	private List<Donation> Doacoes = new ArrayList<>();

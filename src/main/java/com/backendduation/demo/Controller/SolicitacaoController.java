@@ -1,7 +1,7 @@
 package com.backendduation.demo.Controller;
 
 import java.util.ArrayList;
-import java.util.List;import javax.naming.ldap.UnsolicitedNotificationListener;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backendduation.demo.Entity.Donation;
 import com.backendduation.demo.Entity.Solicitacao;
-import com.backendduation.demo.Entity.SolicitacaoRole;
 import com.backendduation.demo.Entity.User;
 import com.backendduation.demo.Repository.DonationRepository;
 import com.backendduation.demo.Repository.SolicitacaoRepository;
@@ -24,6 +23,7 @@ import com.backendduation.demo.Repository.UserRepository;
 import com.backendduation.demo.Service.DonationService;
 import com.backendduation.demo.Service.SolicitacaoService;
 import com.backendduation.demo.Service.UserService;
+import com.backendduation.demo.enums.SolicitacaoRole;
 
 @RestController
 @RequestMapping("/solicitacoes")
@@ -90,19 +90,19 @@ public class SolicitacaoController {
 	@PostMapping("/realizarsolicitacao/doadorid={doador_id}/receptorid={receptor_id}/donationid={donation_id}")
 	public ResponseEntity insert(@RequestBody @Validated Solicitacao solicitacao,@PathVariable("doador_id") Long iddoador,@PathVariable("receptor_id") Long idreceptor, @PathVariable("donation_id") Long iddonation)
 	{	        	        		
-		User solicitante=userrepository.findById(idreceptor).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
-		User doador=userrepository.findById(iddoador).orElseThrow(()->new IllegalArgumentException("Id doador nao encontrado"));
-		Donation doation=donationrepository.findById(iddonation).orElseThrow(()->new IllegalArgumentException("Id  donation nao encontrado"));									
-		solicitacao.setDestinatario(doador);
-		doation.getDonationSolicitadas().add(solicitacao);
-		solicitacao.setSolicitante(solicitante);
-		solicitacao.setSolicita_donations(doation);
-		solicitante.getSolicitacoesEnviadas().add(solicitacao);
-		doador.getSolicitacoesRecebidas().add(solicitacao);
-		solicitacao.setRole(SolicitacaoRole.AGUARDANDO);
-		solicitacao=solservice.insert(solicitacao);
-		
-		return ResponseEntity.ok().body(solicitacao);												
+	User solicitante=userrepository.findById(idreceptor).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
+	User doador=userrepository.findById(iddoador).orElseThrow(()->new IllegalArgumentException("Id doador nao encontrado"));
+	Donation doation=donationrepository.findById(iddonation).orElseThrow(()->new IllegalArgumentException("Id  donation nao encontrado"));									
+	solicitacao.setDestinatario(doador);
+	doation.getDonationSolicitadas().add(solicitacao);
+	solicitacao.setSolicitante(solicitante);
+	solicitacao.setSolicita_donations(doation);
+	solicitante.getSolicitacoesEnviadas().add(solicitacao);
+	doador.getSolicitacoesRecebidas().add(solicitacao);
+	solicitacao.setRole(SolicitacaoRole.AGUARDANDO);
+	solicitacao=solservice.insert(solicitacao);
+	
+	return ResponseEntity.ok().body(solicitacao);												
 	}
 			
 	
