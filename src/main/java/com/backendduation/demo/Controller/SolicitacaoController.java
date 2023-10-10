@@ -54,14 +54,10 @@ public class SolicitacaoController {
 	}
 	
 	
-	@PatchMapping("/acepptSolicitation/id={solicitacao_id}/doadorid={doador_id}/receptorid={receptor_id}/donationid={donation_id}")
-	public ResponseEntity aceitarSolicitacao(@PathVariable("solicitacao_id") Long idsolicitacao,
-			@PathVariable("doador_id") Long iddoador,
-	        @PathVariable("receptor_id") Long idreceptor,
-	        @PathVariable("donation_id") Long iddonation) {
-		Solicitacao solicitation=solicitacaoRepository.findById(idsolicitacao).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
-		List<Solicitacao> listaSolicitaçoes = new ArrayList<>(); 
-		listaSolicitaçoes=solservice.findAll();	
+	@PatchMapping("/acepptSolicitation/solicitacaoid={solicitacao_id}/doadorid={doador_id}/receptorid={receptor_id}/donationid={donation_id}")
+	public ResponseEntity aceitarSolicitacao(@PathVariable("solicitacao_id") Long idsolicitacao,@PathVariable("doador_id") Long iddoador,@PathVariable("receptor_id") Long idreceptor, @PathVariable("donation_id") Long iddonation) {				        	  
+	Solicitacao solicitation=solicitacaoRepository.findById(idsolicitacao).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
+	List<Solicitacao> listaSolicitacoes = new ArrayList<>(); 
 		if(solicitation.getRole().equals(SolicitacaoRole.AGUARDANDO)){
 			User solicitante=userrepository.findById(idreceptor).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
 			User doador=userrepository.findById(iddoador).orElseThrow(()->new IllegalArgumentException("Id doador nao encontrado"));
@@ -70,6 +66,12 @@ public class SolicitacaoController {
 			if(solicitation.getRole().equals(SolicitacaoRole.ACEITA)) {
 				solicitante.getDoacoes().add(doation);
 				doation.setUsuario(solicitante);
+				listaSolicitacoes=doation.getDonationSolicitadas();
+				for(Solicitacao solicitacoesdestadoacao : listaSolicitacoes ) {
+					if(solicitacoesdestadoacao.getRole().equals(SolicitacaoRole.AGUARDANDO)) {
+						solicitacoesdestadoacao.setRole(SolicitacaoRole.RECUSADA);
+					}
+				}
 				solicitacaoRepository.save(solicitation);				
 				return ResponseEntity.ok().body("Solicitação Aceita Por favor entre em contato com o Doador "+doador.getNome()+" pelo e-mail "+doador.getEmail());
 			}
@@ -78,24 +80,19 @@ public class SolicitacaoController {
 	}
 	
 	
-		@PatchMapping("/rejeitarSolicitation/id={solicitacao_id}")
-		public ResponseEntity rejeitarSolicitacao(@PathVariable("solicitacao_id") Long idsolicitacao) {
-		Solicitacao solicitation=solicitacaoRepository.findById(idsolicitacao).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
-			solicitation.setRole(SolicitacaoRole.RECUSADA);
-			return ResponseEntity.ok().body("Solicitação Recusada");
-		}
+	@PatchMapping("/rejeitarSolicitation/id={solicitacao_id}")
+	public ResponseEntity rejeitarSolicitacao(@PathVariable("solicitacao_id") Long idsolicitacao) {
+	Solicitacao solicitation=solicitacaoRepository.findById(idsolicitacao).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
+		solicitation.setRole(SolicitacaoRole.RECUSADA);
+		return ResponseEntity.ok().body("Solicitação Recusada");
+	}
 	
 	@PostMapping("/realizarsolicitacao/doadorid={doador_id}/receptorid={receptor_id}/donationid={donation_id}")
-	public ResponseEntity insert(@RequestBody @Validated Solicitacao solicitacao,
-	        @PathVariable("doador_id") Long iddoador,
-	        @PathVariable("receptor_id") Long idreceptor,
-	        @PathVariable("donation_id") Long iddonation) {
-		
+	public ResponseEntity insert(@RequestBody @Validated Solicitacao solicitacao,@PathVariable("doador_id") Long iddoador,@PathVariable("receptor_id") Long idreceptor, @PathVariable("donation_id") Long iddonation)
+	{	        	        		
 		User solicitante=userrepository.findById(idreceptor).orElseThrow(()->new IllegalArgumentException("Id  solicitante nao encontrado"));
 		User doador=userrepository.findById(iddoador).orElseThrow(()->new IllegalArgumentException("Id doador nao encontrado"));
-		Donation doation=donationrepository.findById(iddonation).orElseThrow(()->new IllegalArgumentException("Id  donation nao encontrado"));
-					
-				
+		Donation doation=donationrepository.findById(iddonation).orElseThrow(()->new IllegalArgumentException("Id  donation nao encontrado"));									
 		solicitacao.setDestinatario(doador);
 		doation.getDonationSolicitadas().add(solicitacao);
 		solicitacao.setSolicitante(solicitante);
@@ -104,8 +101,8 @@ public class SolicitacaoController {
 		doador.getSolicitacoesRecebidas().add(solicitacao);
 		solicitacao.setRole(SolicitacaoRole.AGUARDANDO);
 		solicitacao=solservice.insert(solicitacao);
-		return ResponseEntity.ok().body(solicitacao);								
-				
+		
+		return ResponseEntity.ok().body(solicitacao);												
 	}
 			
 	

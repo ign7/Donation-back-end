@@ -39,23 +39,14 @@ public class Donation implements Serializable {
 	@ManyToOne	
 	private User usuario;	
 	
-//	@JsonIgnore
-//	@ManyToOne
-//	@JoinColumn(name ="solicitacao_id")		
-//	private Donation solicita_donations;	
-	
 	@OneToMany(mappedBy = "solicita_donations")
-	private List<Solicitacao> donationSolicitadas = new ArrayList<>();
-	
-
+	private List<Solicitacao> donationSolicitadas = new ArrayList<>();		
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "material")
 	private List<Material> materiais = new ArrayList<>();
 	
-//   public Donation(String DataDoacao) {
-//	   this.dataDoacao=DataDoacao;
-//   }
+
 	
 
 }
