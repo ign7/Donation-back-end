@@ -55,7 +55,7 @@ public class UserController {
 	public ResponseEntity insert(@RequestBody @Validated RegisterDTO data){
 		if(this.repository.findBylogin(data.login())!=null) return ResponseEntity.badRequest().build();		
 		String criptografiadesenha= new BCryptPasswordEncoder().encode(data.password());
-		User user = new User(data.login(),criptografiadesenha,data.nome(),data.email(),data.idade(),data.role());
+		User user = new User(data.login(),criptografiadesenha,data.nome(),data.email(),data.idade(),data.telefone(),data.role());
 		this.repository.save(user);
 		return ResponseEntity.ok().build();
 		

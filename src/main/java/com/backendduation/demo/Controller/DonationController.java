@@ -16,6 +16,7 @@ import com.backendduation.demo.Entity.Donation;
 import com.backendduation.demo.Entity.User;
 import com.backendduation.demo.Repository.UserRepository;
 import com.backendduation.demo.Service.DonationService;
+import com.backendduation.demo.enums.DonationRole;
 import com.backendduation.demo.enums.UserRole;
 
 
@@ -42,6 +43,7 @@ public class DonationController {
 		User usuario=repository.findById(id).orElseThrow(()->new IllegalArgumentException("Id nao encontrado"));			    
 		item.setUsuario(usuario);
 		usuario.getDoacoes().add(item);
+		item.setStatus(DonationRole.DISPONIVEL);
 	    item=service.insert(item);
 		return ResponseEntity.ok().body(item);
 	}

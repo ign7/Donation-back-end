@@ -23,6 +23,7 @@ import com.backendduation.demo.Repository.UserRepository;
 import com.backendduation.demo.Service.DonationService;
 import com.backendduation.demo.Service.SolicitacaoService;
 import com.backendduation.demo.Service.UserService;
+import com.backendduation.demo.enums.DonationRole;
 import com.backendduation.demo.enums.SolicitacaoRole;
 
 @RestController
@@ -65,6 +66,7 @@ public class SolicitacaoController {
 			solicitation.setRole(SolicitacaoRole.ACEITA);
 			if(solicitation.getRole().equals(SolicitacaoRole.ACEITA)) {
 				solicitante.getDoacoes().add(doation);
+				doation.setStatus(DonationRole.ENCERRADA);
 				doation.setUsuario(solicitante);
 				listaSolicitacoes=doation.getDonationSolicitadas();
 				for(Solicitacao solicitacoesdestadoacao : listaSolicitacoes ) {
@@ -73,7 +75,7 @@ public class SolicitacaoController {
 					}
 				}
 				solicitacaoRepository.save(solicitation);				
-				return ResponseEntity.ok().body("Solicitação Aceita Por favor entre em contato com o Doador "+doador.getNome()+" pelo e-mail "+doador.getEmail());
+				return ResponseEntity.ok().body("Solicitação Aceita Por favor entre em contato com o Doador "+doador.getNome()+" pelo e-mail "+doador.getEmail()+" ou pelo telefone "+doador.getTelefone());
 			}
 		}				
 		return ResponseEntity.badRequest().build();

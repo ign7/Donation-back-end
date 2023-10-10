@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.backendduation.demo.enums.Categoria;
+import com.backendduation.demo.enums.DonationRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -37,6 +38,7 @@ public class Donation implements Serializable {
 	private String nome;
 	private String dataDoacao;	
 	private Categoria categoria;
+	private DonationRole status;
 	@JsonIgnore
 	@JoinColumn(name ="user_id")
 	@ManyToOne	

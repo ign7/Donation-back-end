@@ -2,6 +2,7 @@ package com.backendduation.demo.Entity;
 
 import java.io.Serializable;
 
+import com.backendduation.demo.enums.Qualidade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -32,6 +33,7 @@ public class Material implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	private Qualidade qualidade;
 	@JsonIgnore
 	@JoinColumn(name="donation_id")
 	@ManyToOne

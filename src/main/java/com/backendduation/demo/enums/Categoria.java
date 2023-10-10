@@ -5,7 +5,8 @@ public enum Categoria {
 	ELETRONICO("eletronico"),
 	MATERIALESCOLAR("materialescolar"),
 	LIVRO("livro"),
-	CADERNO("caderno");
+	CADERNO("caderno"),
+	MOCHILA("mochila");
 	
 	private String categoria;
 	
