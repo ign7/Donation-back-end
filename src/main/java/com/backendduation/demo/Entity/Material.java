@@ -2,6 +2,8 @@ package com.backendduation.demo.Entity;
 
 import java.io.Serializable;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.backendduation.demo.enums.Qualidade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,6 +36,7 @@ public class Material implements Serializable {
 	private Long id;
 	private String nome;
 	private Qualidade qualidade;
+	private String imagem;
 	@JsonIgnore
 	@JoinColumn(name="donation_id")
 	@ManyToOne

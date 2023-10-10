@@ -47,7 +47,7 @@ public class Donation implements Serializable {
 	@OneToMany(mappedBy = "solicita_donations")
 	private List<Solicitacao> donationSolicitadas = new ArrayList<>();		
 	
-	@JsonIgnore
+	
 	@OneToMany(mappedBy = "material")
 	private List<Material> materiais = new ArrayList<>();
 	

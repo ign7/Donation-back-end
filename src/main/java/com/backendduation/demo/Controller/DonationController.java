@@ -47,19 +47,6 @@ public class DonationController {
 	    item=service.insert(item);
 		return ResponseEntity.ok().body(item);
 	}
-	
-	
-	//@PostMapping("/cadastrardonation/{usuario_id}")
-	//public ResponseEntity<Donation> insert(@RequestBody Donation item,@PathVariable("usuario_id") Long id) {
-		//User usuario=repository.findById(id).orElseThrow(()->new IllegalArgumentException("Id nao encontrado"));
-		//if(usuario.getRole()==role.DOADOR) {
-			//item.setUsuario(usuario);
-			//usuario.getDoacoes().add(item);
-		    //tem=service.insert(item);
-			//return ResponseEntity.ok().body(item);
-		//}
-		//return ResponseEntity.badRequest().build();
 		
-	//}
 
 }
