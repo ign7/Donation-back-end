@@ -1,5 +1,6 @@
 package com.backendduation.demo.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backendduation.demo.Entity.Donation;
 import com.backendduation.demo.Entity.User;
+import com.backendduation.demo.Repository.DonationRepository;
 import com.backendduation.demo.Repository.UserRepository;
 import com.backendduation.demo.Service.DonationService;
+import com.backendduation.demo.enums.Categoria;
 import com.backendduation.demo.enums.DonationRole;
 import com.backendduation.demo.enums.UserRole;
 
@@ -30,6 +33,9 @@ public class DonationController {
 	@Autowired
 	UserRepository repository;
 	
+	@Autowired
+	DonationRepository drepo;
+	
 	UserRole role;
 	
 	@GetMapping("/todos")
@@ -37,6 +43,19 @@ public class DonationController {
 		List<Donation> itens = service.findAll();
 		return ResponseEntity.ok().body(itens);
 	}
+	
+	@GetMapping("/pesquisardoacao/nomedoacao={nome}")
+	public ResponseEntity<List<Donation>> findByNome(@PathVariable String nome) {
+	    List<Donation> doacoes = drepo.findBynome(nome); 
+	    return ResponseEntity.ok().body(doacoes);
+	}
+	
+	@GetMapping("/pesquisardoacao/categoriadoacao={categoria}")
+	public ResponseEntity<List<Donation>> findByCategoria(@PathVariable Categoria categoria) {
+	    List<Donation> doacoes = drepo.findBycategoria(categoria); 
+	    return ResponseEntity.ok().body(doacoes);
+	}
+
 	
 	@PostMapping("/cadastrardonation/{usuario_id}")
 	public ResponseEntity<Donation> insert(@RequestBody @Validated Donation item,@PathVariable("usuario_id") Long id) {

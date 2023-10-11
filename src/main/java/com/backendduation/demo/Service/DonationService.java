@@ -8,8 +8,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.backendduation.demo.Entity.Donation;
-import com.backendduation.demo.Entity.User;
 import com.backendduation.demo.Repository.DonationRepository;
+import com.backendduation.demo.enums.Categoria;
 
 
 
@@ -38,6 +38,17 @@ public class DonationService {
 		}catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public List<Donation> findBynome(Categoria categoria) {
+		 List<Donation> obj=repository.findBycategoria(categoria);
+		 return obj;
+	}
+	
+	public List<Donation> findBynome(String nome) {
+		List<Donation> obj=repository.findBynome(nome);
+		 return obj;
 	}
 
 	public Optional<Donation> findbyid(Long id) {

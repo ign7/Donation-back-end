@@ -52,10 +52,7 @@ public class Solicitacao implements Serializable {
 //	@OneToMany(mappedBy = "solicita_donations")
 //	private List<Donation> donationSolicitadas = new ArrayList<>();
 	
-	
-	
-
-	
+		
 	private String dataSolicitacao;
 	
     private String observacao;

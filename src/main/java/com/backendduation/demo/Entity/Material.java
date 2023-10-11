@@ -37,6 +37,8 @@ public class Material implements Serializable {
 	private String nome;
 	private Qualidade qualidade;
 	private String imagem;
+	private Integer quantidade;
+	private String descricao;
 	@JsonIgnore
 	@JoinColumn(name="donation_id")
 	@ManyToOne

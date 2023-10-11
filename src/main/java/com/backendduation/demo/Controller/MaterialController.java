@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.backendduation.demo.Entity.Donation;
 import com.backendduation.demo.Entity.Material;
 import com.backendduation.demo.Repository.DonationRepository;
+import com.backendduation.demo.Repository.MaterialRepository;
 import com.backendduation.demo.Service.MaterialService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -30,6 +31,9 @@ public class MaterialController {
 	MaterialService service;
 	
 	@Autowired
+	MaterialRepository repository;
+	
+	@Autowired
 	DonationRepository donationRepository;
 	
 	
@@ -37,6 +41,13 @@ public class MaterialController {
 	public ResponseEntity<List<Material>>findAll(){
 		List<Material> list=service.findAll();
 		return ResponseEntity.ok().body(list);
+	}
+	
+	
+	@GetMapping("/pesquisarMaterial/nomematerial={nome}")
+	public ResponseEntity findByNome(@PathVariable String nome){
+		Material material=repository.findBynome(nome);
+		return ResponseEntity.ok().body(material);
 	}
 	
 	@PostMapping( value="/cadastrarmaterial/donationid={iddonation}", consumes = "multipart/form-data")	
