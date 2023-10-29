@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,11 +52,12 @@ public class UserController {
 	return ResponseEntity.ok().body(obj);
 	}
 	
+	
 	@PostMapping("/register")
 	public ResponseEntity insert(@RequestBody @Validated RegisterDTO data){
 		if(this.repository.findBylogin(data.login())!=null) return ResponseEntity.badRequest().build();		
 		String criptografiadesenha= new BCryptPasswordEncoder().encode(data.password());
-		User user = new User(data.login(),criptografiadesenha,data.nome(),data.email(),data.idade(),data.telefone(),data.role());
+		User user = new User(data.login(),criptografiadesenha,data.nome(),data.email(),data.telefone(),data.role());
 		this.repository.save(user);
 		return ResponseEntity.ok().build();
 		

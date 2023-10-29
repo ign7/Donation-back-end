@@ -1,6 +1,5 @@
 package com.backendduation.demo.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +46,13 @@ public class DonationController {
 	@GetMapping("/pesquisardoacao/nomedoacao={nome}")
 	public ResponseEntity<List<Donation>> findByNome(@PathVariable String nome) {
 	    List<Donation> doacoes = drepo.findBynome(nome); 
+	    return ResponseEntity.ok().body(doacoes);
+	}
+	
+	@GetMapping("/pesquisardoacao/iduser={id}")
+	public ResponseEntity<List<Donation>> findByUser(@PathVariable Long id) {
+		User dono=repository.findById(id).orElseThrow(()-> new IllegalArgumentException("id nao encontrado de usuario"));
+	    List<Donation> doacoes = dono.getDoacoes(); 
 	    return ResponseEntity.ok().body(doacoes);
 	}
 	

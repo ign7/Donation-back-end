@@ -22,23 +22,27 @@ public class SecurityConfigurations {
 	@Autowired
 	SecurityFilter securityFilter;
 	
+	
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception{
-		return http.
-				csrf(csrf->csrf.disable())
-				.sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(authorize->authorize
-						.requestMatchers(HttpMethod.POST,"/usuarios/login").permitAll()
-						.requestMatchers(HttpMethod.POST,"/usuarios/register").permitAll()
-						.requestMatchers(HttpMethod.GET,"/usuarios").permitAll()
-						.requestMatchers(HttpMethod.GET,"/solicitacoes/listartodos").permitAll()
-						.requestMatchers(HttpMethod.POST,"/solicitacoes/realizarsolicitacao/**").permitAll()
-						.requestMatchers(HttpMethod.POST,"/donations/cadastrardonation/**").hasRole("DOADOR").anyRequest()
-						.authenticated())
-				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-						.build();
-		
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	    return http
+	        .cors() // Habilita o CORS
+	        .and()
+	        .csrf().disable() // Desabilita o CSRF
+	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	        .authorizeHttpRequests(authorize -> authorize
+	            .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
+	            .requestMatchers(HttpMethod.POST, "/usuarios/register").permitAll()
+	            .requestMatchers(HttpMethod.GET, "/usuarios").permitAll()
+	            .requestMatchers(HttpMethod.GET, "/solicitacoes/listartodos").permitAll()
+	            .requestMatchers(HttpMethod.POST, "/solicitacoes/realizarsolicitacao/**").permitAll()
+	            .requestMatchers(HttpMethod.POST, "/donations/cadastrardonation/**").hasRole("DOADOR")
+	            .anyRequest().authenticated()
+	        )
+	        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+	        .build();
 	}
+
 	
 	
 	@Bean

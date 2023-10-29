@@ -54,13 +54,12 @@ public class User implements UserDetails{
     
     
 	
-	public User(String login,String password,String nome,String email,Integer idade,String telefone,UserRole role) {
+	public User(String login,String password,String nome,String email,String telefone,UserRole role) {
 		super();
 		this.login = login;
 		this.password = password;
 		this.nome=nome;
 		this.email=email;
-		this.idade=idade;
 		this.telefone=telefone;
 		this.role = role;
 	}
