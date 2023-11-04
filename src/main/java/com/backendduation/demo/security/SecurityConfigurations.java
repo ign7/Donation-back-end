@@ -36,13 +36,15 @@ public class SecurityConfigurations {
 	            .requestMatchers(HttpMethod.GET, "/usuarios").permitAll()
 	            .requestMatchers(HttpMethod.GET, "/solicitacoes/listartodos").permitAll()
 	            .requestMatchers(HttpMethod.POST, "/solicitacoes/realizarsolicitacao/**").permitAll()
+	            .requestMatchers(HttpMethod.GET, "/donations/todos").permitAll()
+	            .requestMatchers(HttpMethod.GET, "/donations/pesquisardoacao/**").permitAll()
 	            .requestMatchers(HttpMethod.POST, "/donations/cadastrardonation/**").hasRole("DOADOR")
 	            .anyRequest().authenticated()
 	        )
 	        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 	        .build();
 	}
-
+	
 	
 	
 	@Bean

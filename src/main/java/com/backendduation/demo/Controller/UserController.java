@@ -71,7 +71,7 @@ public class UserController {
 		var auth= this.authetication.authenticate(usernamepassword);
 		var token=Tokenservice.generateToken((User)auth.getPrincipal());
 		
-		return ResponseEntity.ok(new LoginResponseDTO(token));
+		return ResponseEntity.ok(new LoginResponseDTO(token,data.login()));
 	}
 
 }
