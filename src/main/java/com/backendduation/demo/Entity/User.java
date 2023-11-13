@@ -41,6 +41,7 @@ public class User implements UserDetails{
     private Integer idade;
 	private String email;
 	private String telefone;
+	private boolean representante;
     private UserRole role;   
     @OneToMany(mappedBy = "usuario")
 	private List<Donation> Doacoes = new ArrayList<>();

@@ -52,6 +52,12 @@ public class UserController {
 	return ResponseEntity.ok().body(obj);
 	}
 	
+	@GetMapping(value="/login={login}")	
+	public ResponseEntity<User> findbyLogin(@PathVariable String login) {
+	User obj=repository.findByLogin(login);		
+	return ResponseEntity.ok().body(obj);
+	}
+	
 	
 	@PostMapping("/register")
 	public ResponseEntity insert(@RequestBody @Validated RegisterDTO data){
