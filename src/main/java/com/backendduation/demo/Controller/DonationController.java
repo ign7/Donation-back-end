@@ -63,16 +63,16 @@ public class DonationController {
 	}
 
 	
-//	@PostMapping("/cadastrardonation/{usuario_id}")
-//	public ResponseEntity<Donation> insert(@RequestBody @Validated Donation item,@PathVariable("usuario_id") Long id) {
-//		User usuario=repository.findById(id).orElseThrow(()->new IllegalArgumentException("Id nao encontrado"));			    
-//		item.setUsuario(usuario);
-//		usuario.getDoacoes().add(item);
-//		item.setStatus(DonationRole.DISPONIVEL);
-//	    item=service.insert(item);
-//		return ResponseEntity.ok().body(item);
-//	}
-	
+    @GetMapping("/pesquisardoacao/getuserbynomeDonation={nomeDonation}")
+	public ResponseEntity<User> findByDonoDonation(@PathVariable String nomeDonation){
+    	List<Donation> donation=service.findBynome(nomeDonation);
+    	User donodaporratoda =  new User();
+    	for (Donation donations : donation) {
+    		donodaporratoda=donations.getUsuario();
+    	}
+
+    	return ResponseEntity.ok().body(donodaporratoda);
+    }
 	
 	@PostMapping("/cadastrardonation/{login}")
 	public ResponseEntity<Donation> insert(@RequestBody @Validated Donation item,@PathVariable("login") String login) {
