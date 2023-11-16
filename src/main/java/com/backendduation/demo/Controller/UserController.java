@@ -28,56 +28,55 @@ import com.backendduation.demo.Service.UserService;
 @RestController
 @RequestMapping("/usuarios")
 public class UserController {
-	
+
 	@Autowired
 	UserService service;
-	
+
 	@Autowired
 	TokenService Tokenservice;
-	
+
 	@Autowired
 	private AuthenticationManager authetication;
-	
+
 	@Autowired
 	private UserRepository repository;
-	
+
 	@GetMapping
 	public List<User> findAll() {
 		return service.findAll();
 	}
-	
-	@GetMapping(value="id=/{iduser}")	
+
+	@GetMapping(value = "id=/{iduser}")
 	public ResponseEntity<Optional<User>> findbyid(@PathVariable Long iduser) {
-	Optional<User> obj=service.findbyid(iduser);		
-	return ResponseEntity.ok().body(obj);
+		Optional<User> obj = service.findbyid(iduser);
+		return ResponseEntity.ok().body(obj);
 	}
-	
-	@GetMapping(value="/login={login}")	
+
+	@GetMapping(value = "/login={login}")
 	public ResponseEntity<User> findbyLogin(@PathVariable String login) {
-	User obj=repository.findByLogin(login);		
-	return ResponseEntity.ok().body(obj);
+		User obj = repository.findByLogin(login);
+		return ResponseEntity.ok().body(obj);
 	}
-	
-	
+
 	@PostMapping("/register")
-	public ResponseEntity insert(@RequestBody @Validated RegisterDTO data){
-		if(this.repository.findBylogin(data.login())!=null) return ResponseEntity.badRequest().build();		
-		String criptografiadesenha= new BCryptPasswordEncoder().encode(data.password());
-		User user = new User(data.login(),criptografiadesenha,data.nome(),data.email(),data.telefone(),data.role());
+	public ResponseEntity insert(@RequestBody @Validated RegisterDTO data) {
+		if (this.repository.findBylogin(data.login()) != null)
+			return ResponseEntity.badRequest().build();
+		String criptografiadesenha = new BCryptPasswordEncoder().encode(data.password());
+		User user = new User(data.login(), criptografiadesenha, data.nome(), data.email(), data.telefone(),
+				data.role());
 		this.repository.save(user);
 		return ResponseEntity.ok().build();
-		
+
 	}
-	
-	
-	
+
 	@PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Validated UserDTO data) {
-		var usernamepassword= new UsernamePasswordAuthenticationToken(data.login(), data.password());
-		var auth= this.authetication.authenticate(usernamepassword);
-		var token=Tokenservice.generateToken((User)auth.getPrincipal());
-		
-		return ResponseEntity.ok(new LoginResponseDTO(token,data.login()));
+	public ResponseEntity login(@RequestBody @Validated UserDTO data) {
+		var usernamepassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+		var auth = this.authetication.authenticate(usernamepassword);
+		var token = Tokenservice.generateToken((User) auth.getPrincipal());
+
+		return ResponseEntity.ok(new LoginResponseDTO(token, data.login()));
 	}
 
 }
