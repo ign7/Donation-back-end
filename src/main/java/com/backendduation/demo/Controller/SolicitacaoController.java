@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backendduation.demo.Entity.Donation;
 import com.backendduation.demo.Entity.Solicitacao;
+import com.backendduation.demo.Entity.SolicitacaoDTO;
 import com.backendduation.demo.Entity.User;
 import com.backendduation.demo.Repository.DonationRepository;
 import com.backendduation.demo.Repository.SolicitacaoRepository;
@@ -51,6 +52,17 @@ public class SolicitacaoController {
 	@GetMapping(value = "/listatodos")
 	public List<Solicitacao> findAll() {
 		return solservice.findAll();
+	}
+
+	@GetMapping(value = "/solicitacaoporid/byid={id}")
+	public ResponseEntity<SolicitacaoDTO> findbySolicitacaoId(@PathVariable Long id) {
+		Solicitacao obj = solicitacaoRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Id  solicitante nao encontrado"));
+		Long id_donation = obj.getSolicita_donations().getId();
+		Long id_doador = obj.getDestinatario().getId();
+		Long id_receptor = obj.getSolicitante().getId();
+		SolicitacaoDTO solicitacaoDTO = new SolicitacaoDTO(obj, id_donation, id_receptor, id_doador);
+		return ResponseEntity.ok().body(solicitacaoDTO);
 	}
 
 	@PatchMapping("/acepptSolicitation/solicitacaoid={solicitacao_id}/doadorid={doador_id}/receptorid={receptor_id}/donationid={donation_id}")
@@ -95,13 +107,11 @@ public class SolicitacaoController {
 		return ResponseEntity.ok().body("Solicitação Recusada");
 	}
 
-
-	
 	@PostMapping("/realizarsolicitacao/doadorid={doador_id}/receptorid={receptor_id}/donationid={donation_id}")
 	public ResponseEntity insert(@RequestBody @Validated Solicitacao solicitacao,
 			@PathVariable("doador_id") Long iddoador, @PathVariable("receptor_id") Long idreceptor,
 			@PathVariable("donation_id") Long iddonation) {
-		if (!iddoador.equals(idreceptor)) {			
+		if (!iddoador.equals(idreceptor)) {
 			User solicitante = userrepository.findById(idreceptor)
 					.orElseThrow(() -> new IllegalArgumentException("Id  solicitante nao encontrado"));
 			User doador = userrepository.findById(iddoador)
@@ -116,16 +126,19 @@ public class SolicitacaoController {
 			doador.getSolicitacoesRecebidas().add(solicitacao);
 			solicitacao.setRole(SolicitacaoRole.AGUARDANDO);
 			List<Solicitacao> solicitacoes = solservice.findAll();
-			for( Solicitacao sol : solicitacoes) {
-				if(sol.getSolicitante().getId().equals(idreceptor) && sol.getSolicita_donations().getId().equals(iddonation)) {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ops... Voce so pode solicitar uma vez !!");
+			for (Solicitacao sol : solicitacoes) {
+				if (sol.getSolicitante().getId().equals(idreceptor)
+						&& sol.getSolicita_donations().getId().equals(iddonation)) {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body("Ops... Voce so pode solicitar uma vez !!");
 				}
 			}
-			solicitacao = solservice.insert(solicitacao);			
+			solicitacao = solservice.insert(solicitacao);
 			return ResponseEntity.ok().body(solicitacao);
 		}
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ops... Voce nao pode solicitar sua propria doação !!");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.body("Ops... Voce nao pode solicitar sua propria doação !!");
 	}
 
 }
