@@ -72,30 +72,32 @@ public class SolicitacaoController {
 		Solicitacao solicitation = solicitacaoRepository.findById(idsolicitacao)
 				.orElseThrow(() -> new IllegalArgumentException("Id  solicitante nao encontrado"));
 		List<Solicitacao> listaSolicitacoes = new ArrayList<>();
-		if (solicitation.getRole().equals(SolicitacaoRole.AGUARDANDO)) {
-			User solicitante = userrepository.findById(idreceptor)
-					.orElseThrow(() -> new IllegalArgumentException("Id  solicitante nao encontrado"));
-			User doador = userrepository.findById(iddoador)
-					.orElseThrow(() -> new IllegalArgumentException("Id doador nao encontrado"));
-			Donation doation = donationrepository.findById(iddonation)
-					.orElseThrow(() -> new IllegalArgumentException("Id  donation nao encontrado"));
-			solicitation.setRole(SolicitacaoRole.ACEITA);
-			if (solicitation.getRole().equals(SolicitacaoRole.ACEITA)) {
-				solicitante.getDoacoes().add(doation);
-				doation.setStatus(DonationRole.ENCERRADA);
-				doation.setUsuario(solicitante);
-				listaSolicitacoes = doation.getDonationSolicitadas();
-				for (Solicitacao solicitacoesdestadoacao : listaSolicitacoes) {
-					if (solicitacoesdestadoacao.getRole().equals(SolicitacaoRole.AGUARDANDO)) {
-						solicitacoesdestadoacao.setRole(SolicitacaoRole.RECUSADA);
-					}
+
+		User solicitante = userrepository.findById(idreceptor)
+				.orElseThrow(() -> new IllegalArgumentException("Id  solicitante nao encontrado"));
+		User doador = userrepository.findById(iddoador)
+				.orElseThrow(() -> new IllegalArgumentException("Id doador nao encontrado"));
+		Donation doation = donationrepository.findById(iddonation)
+				.orElseThrow(() -> new IllegalArgumentException("Id  donation nao encontrado"));
+		solicitation.setRole(SolicitacaoRole.ACEITA);
+		if (solicitation.getRole().equals(SolicitacaoRole.ACEITA)) {
+			solicitante.getDoacoes().add(doation);
+			doation.setStatus(DonationRole.ENCERRADA);
+			solicitante.setMsgDoacaoConfirmada(
+					"A Solicitação de " +doation.getNome() +" feita em "+solicitation.getDataSolicitacao()+" Foi Aceita !! , Por favor entre em contato com o Doador " + doador.getNome() + " pelo e-mail "
+							+ doador.getEmail() + " ou pelo telefone " + doador.getTelefone());
+			doation.setUsuario(solicitante);
+			listaSolicitacoes = doation.getDonationSolicitadas();
+			for (Solicitacao solicitacoesdestadoacao : listaSolicitacoes) {
+				if (solicitacoesdestadoacao.getRole().equals(SolicitacaoRole.AGUARDANDO)) {
+					solicitacoesdestadoacao.setRole(SolicitacaoRole.RECUSADA);
 				}
-				solicitacaoRepository.save(solicitation);
-				return ResponseEntity.ok()
-						.body("Solicitação Aceita Por favor entre em contato com o Doador " + doador.getNome()
-								+ " pelo e-mail " + doador.getEmail() + " ou pelo telefone " + doador.getTelefone());
 			}
+			solicitacaoRepository.save(solicitation);
+			return ResponseEntity.ok()
+					.body(solicitante);
 		}
+
 		return ResponseEntity.badRequest().build();
 	}
 

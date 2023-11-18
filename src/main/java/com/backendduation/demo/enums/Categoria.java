@@ -1,5 +1,8 @@
 package com.backendduation.demo.enums;
 
+import jakarta.persistence.Entity;
+
+
 public enum Categoria {
 	
 	ELETRONICO("eletronico"),
